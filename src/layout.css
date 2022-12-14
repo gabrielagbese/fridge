@@ -8,9 +8,8 @@
 
 .tagstyle {
   border: thin solid black;
-  max-width: 5%;
+  max-width: 6%;
   min-width: 3%;
-  height: 18px;
   padding-bottom: 3px;
   overflow: hidden;
   border-radius: 5px;

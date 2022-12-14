@@ -6,7 +6,7 @@ import "./layout.css"
 function App() {
   const [mealData, setMealData] = useState(null);
   const [ingredients, setIngredients] = useState("chicken,curry");
-  var [ingredientList, listChange] = useState(["chicken","beef","rice","beans"])
+  var [ingredientList, listChange] = useState([""])
   let stringResult;
   
 
