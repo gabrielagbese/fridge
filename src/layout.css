@@ -1,5 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap");
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -10,11 +11,15 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 9px;
-  background-color: rgba(255, 255, 255, 0.024);
+  background-color: rgba(32, 32, 32, 0.4);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.314);
+  background-color: rgba(32, 32, 32, 0.2);
+}
+
+.app {
+  background-color: #EEF0EB;
 }
 
 @media (min-width: 0px) {
@@ -31,7 +36,7 @@
     display: -ms-flexbox;
     display: flex;
     overflow: hidden;
-    height: 99vh;
+    height: 100vh;
     width: 100%;
   }
 }
@@ -42,7 +47,7 @@
     overflow: auto;
     width: 97.5%;
     padding: 1%;
-    margin-top: 2%;
+    margin-top: 5%;
   }
 }
 
@@ -51,7 +56,7 @@
     height: 99vh;
     width: 30%;
     padding: 1%;
-    margin-top: 2%;
+    margin-top: 3%;
   }
 }
 
@@ -62,7 +67,7 @@
 @media (min-width: 0px) {
   .result {
     overflow-y: auto;
-    background-color: bisque;
+    background-color: #ebf0e6;
     width: 97.5%;
     height: 99vh;
     padding: 2%;
@@ -72,16 +77,24 @@
 @media (min-width: 960px) {
   .result {
     overflow-y: auto;
-    background-color: bisque;
+    background-color: #e4eadf;
     width: 70%;
     height: 99vh;
     padding: 2%;
+    border-left: medium solid black;
   }
 }
 
 .input-section {
   width: 100%;
   height: 20%;
+}
+
+.whats {
+  font-size: 2rem;
+  font-family: 'DM Serif Display', serif;
+  margin: 0;
+  margin-bottom: 2%;
 }
 
 .input-section-top {
@@ -94,20 +107,28 @@
 }
 
 .ing-input {
-  width: 75%;
-  font-size: 2.5rem;
+  width: 74%;
+  padding-inline: 2%;
+  font-size: 1.5rem;
+  border-radius: 10px;
 }
 
 .add-button {
   width: 20.5%;
   height: 100%;
   margin-left: 2.5%;
+  font-size: 1.5rem;
+  border-radius: 10px;
 }
 
 .get-button {
-  margin-top: 1.5%;
-  height: 40%;
+  margin-top: 1%;
+  height: 45%;
   width: 100%;
+  background-color: black;
+  color: #DFE4DB;
+  font-size: 1.5rem;
+  border-radius: 15px;
 }
 
 ul {
@@ -116,36 +137,59 @@ ul {
 }
 
 .ingredient-track {
+  margin-top: 3%;
   width: 100%;
-  height: auto;
+  height: 40%;
+  overflow: auto;
+  background-color: #ebefe7;
+  padding-top: 3%;
+  border-radius: 10px;
+  border: thin solid black;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.fav-button {
+  height: 9%;
+  width: 100%;
+  background-color: black;
+  color: #DFE4DB;
+  font-size: 1.5rem;
+  border-radius: 15px;
 }
 
 .tagstyle::before {
   display: inline-block;
   content: "\00d7";
-  padding-right: 2px;
-  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 7.5px;
+  margin-top: 1%;
   border-right: thin solid rgba(0, 0, 0, 0.2);
 }
 
 .tagstyle {
   border: thin solid black;
-  width: 100%;
-  height: 7vh;
-  background-color: peachpuff;
+  width: 96%;
+  margin-left: 2%;
+  padding-bottom: 1%;
+  min-height: 7vh;
+  background-color: #E7DCC9;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 10px;
   margin-bottom: 3%;
+  font-family: 'DM Serif Display', serif;
   list-style: none;
   font-size: 2.25rem;
   text-justify: auto;
 }
 
 .meal-list-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   overflow-x: hidden;
+}
+
+.meal-list {
+  padding-bottom: 5%;
 }
 
 @media (min-width: 0px) {
@@ -157,21 +201,149 @@ ul {
 @media (min-width: 960px) {
   .meal-list {
     width: 70vw;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
   }
 }
 
 .meals {
-  border: thin solid red;
-  width: 98%;
+  width: 100%;
+}
+
+article {
+  border-top: medium solid black;
+}
+
+@media (min-width: 960px) {
+  article {
+    padding-top: 5%;
+  }
+}
+
+@media (min-width: 0px) {
+  .m-inline {
+    width: 90%;
+    margin-left: 2%;
+    margin-top: -10%;
+  }
+}
+
+@media (min-width: 960px) {
+  .m-inline {
+    min-width: 30%;
+    margin-left: 2%;
+    margin-right: 2%;
+    min-height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+}
+
+.m-title {
+  font-family: 'DM Serif Display', serif;
+}
+
+@media (min-width: 0px) {
+  .m-title {
+    font-size: 2rem;
+    margin-bottom: 2%;
+  }
+}
+
+@media (min-width: 960px) {
+  .m-title {
+    min-width: 25%;
+    font-size: 2rem;
+  }
+}
+
+.m-img {
+  border-radius: 15px;
+}
+
+@media (min-width: 0px) {
+  .m-img {
+    min-width: 95%;
+  }
+}
+
+@media (min-width: 960px) {
+  .m-img {
+    min-width: 45%;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+}
+
+@media (min-width: 960px) {
+  .m-ul {
+    margin-left: 5%;
+    min-width: 40%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+  }
 }
 
 .recipe-wrapper {
-  z-index: 5;
-  -webkit-transform: translatex(100%);
-          transform: translatex(100%);
-  width: 100vw;
   font-size: xx-small;
-  height: 300px;
-  background-color: yellow;
+  width: 90%;
+}
+
+.recipe-panel {
+  display: block;
+}
+
+.recipe-card {
+  font-size: 1rem;
+  z-index: 1000;
+  background-color: #BECFBC;
+  border-radius: 20px;
+  padding: 3%;
+  overflow: auto;
+  border: medium solid black;
+}
+
+@media (min-width: 0px) {
+  .recipe-card {
+    position: relative;
+    top: 10px;
+    width: 99%;
+    height: 75vh;
+  }
+}
+
+@media (min-width: 960px) {
+  .recipe-card {
+    position: fixed;
+    top: 5%;
+    left: 32.5%;
+    width: 60%;
+    height: 80%;
+    -webkit-transform: translate(-5px, 0%);
+            transform: translate(-5px, 0%);
+    -webkit-box-shadow: 0px 10px 100px #00000033;
+            box-shadow: 0px 10px 100px #00000033;
+  }
 }
 /*# sourceMappingURL=layout.css.map */

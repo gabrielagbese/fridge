@@ -60,20 +60,20 @@ function App() {
 
 	function showRecipeList(){
 		if(window.innerWidth < 720){
-			tl.to(recipeList,{yPercent: -100,duration: 2})
+			tl.to(recipeList,{yPercent: -100,duration: 1})
 		}
 	}
 
 	function hideRecipeList(){
 		if(window.innerWidth < 720){
-			tl.to(recipeList,{yPercent: 100,duration: 2})
+			tl.to(recipeList,{yPercent: 100,duration: 1})
 		}
 	}
 
 	function getMealData() {
 		console.log("passed string: " + stringResult)
 		fetch(
-			'https://api.spoonacular.com/recipes/findByIngredients?apiKey=33ea468d6ee248d59f00052842c3332b&ingredients=' + stringResult
+			'https://api.spoonacular.com/recipes/findByIngredients?apiKey=84958847be2244b1b11a3158c0e32ca8&ingredients=' + stringResult
 		)
 			.then((response) => response.json())
 			.then((data) => {
@@ -83,7 +83,7 @@ function App() {
 			.catch(() => {
 				console.log("error")
 			})
-		
+			
 		showRecipeList();
 	}
 
@@ -91,12 +91,13 @@ function App() {
 	return (
 		<div className="app">
 			<section className="controls">
+				<p className="whats">What's in your fridge?</p>
 				<div className="input-section">
 					<div className="input-section-top">
 						<input
 							type="string"
 							className="ing-input"
-							placeholder="ingredients"
+							placeholder="Enter Ingredients"
 							onChange={handleChange}
 						/>
 						<button className="add-button" onClick={handleInput}>+</button>
@@ -104,6 +105,7 @@ function App() {
 					<button className="get-button" onClick={getMealData}>Get Recipe</button>
 				</div>
 				<ul className="ingredient-track"></ul>
+				<button className="fav-button">Favorites</button>
 			</section>
 			<section className="result">
 				<p onClick={hideRecipeList}>X</p>

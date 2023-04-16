@@ -9,57 +9,94 @@ export default function Meal({ meal }) {
 	const [recipeData, setRecipeData] = useState(null);
 	const [prepTime, setPrepTime] = useState(null);
 	const [servingsNo, setServingsNo] = useState(null);
+	const [isOpen, setIsOpen] = useState(false);
+	const [cuisine, setCuisine] = useState(null);
+	const [isClosed, setIsClosed] = useState(true);
+	const [title, setTitle] = useState(null);
+
+	const result = document.querySelector(".result");
+
+	// function disableScroll() {
+	// 	// Get the current page scroll position
+	// 	let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	// 	let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+	  
+	// 		// if any scroll is attempted,
+	// 		// set this to the previous value
+	// 		window.onscroll = function() {
+	// 			window.scrollTo(scrollLeft, scrollTop);
+	// 		};
+	// }
+	  
+	// function enableScroll() {
+	// 	window.onscroll = function() {};
+	// }
+
 
 	function getDetails(id) {
 		fetch(
-			// 'https://api.spoonacular.com/recipes/findByIngredients?apiKey=d711325cee4d4d2b969afb272193fcb5&ingredients='+ingredients
-			'https://api.spoonacular.com/recipes/' + id + '/information?apiKey=09c24c93b2974a7b86a966713897fa24&includeNutrition=false'
+			'https://api.spoonacular.com/recipes/' + id + '/information?apiKey=84958847be2244b1b11a3158c0e32ca8&includeNutrition=true'
 		)
 			.then((response) => response.json())
 			.then((data) => {
 				setRecipeData(data.instructions);
 				console.log(data.instructions)
+				console.log(data.cuisine)
 				setPrepTime(data.readyInMinutes)
 				setServingsNo(data.servings)
+				setCuisine(data.cuisine)
+				setTitle(data)
 			})
 			.catch(() => {
 				console.log("error")
 			})
+		console.log("title:" + title)
 	}
 
-	function seeRecipe(){
-		let tl2 = gsap.timeline();
-		let recipeWrapper = document.querySelector(".recipe-wrapper")
+	function seeRecipe() {
 		getDetails(meal.id);
-		tl2.fromTo(recipeWrapper,{xPercent: 0, opacity: 0,duration: 1},{xPercent: -100, opacity: 1,duration: 1})
-	}
-
-	function recipeExit(){
-		let tl2 = gsap.timeline();
-		let recipeWrapper = document.querySelector(".recipe-wrapper")
-		getDetails(meal.id);
-		tl2.to(recipeWrapper,{xPercent: -100, opacity: 0,duration: 1})
+		setIsOpen(true);
+		//result.style.overflow = "hidden"; 
+		// disableScroll();
 	}
 
 	return (
 		<section className='meal-list-wrapper'>
 			<article className='meal-list'>
-				<h1>{meal.title}</h1>
-				<img src={meal.image} alt="recipe" />
-				<ul>
-					<li>No of available ingredients used: {meal.usedIngredientCount}</li>
-					<li>No of missing ingredients: {meal.missedIngredientCount}</li>
-					{/* <li>Ingredients used: {meal.usedIngredients.name}</li> */}
+				<div className='m-inline'>
+					<h1 className='m-title'>{meal.title}</h1>
+					<ul className='m-ul'>
+						<li>Matching ingredients: {meal.usedIngredientCount}</li>
+						{/* <li>Total ingredients: {meal.missedIngredientCount}</li>
+						<li>{Math.round((meal.usedIngredientCount/meal.missedIngredientCount)*100)}% Match</li> */}
+						{/* <li>Ingredients used: {meal.usedIngredients.name}</li> */}
+						<div className='m-buttons'>
+							<button onClick={() => { seeRecipe() }}>See Recipe</button>
+							<button >h</button>
+						</div>
 				</ul>
+				</div>
+				<img className='m-img' src={meal.image} alt="recipe" />
+				
 
 				{/* <a onClick={() => {getDetails(meal.id)}}>See Details</a>
         		<div> {mealinfo}</div> */}
-				<button onClick={() => { seeRecipe() }}>See Recipe</button>
 				
+				<div className='recipe-wrapper'>
+					<p></p>
+					<RecipeCard 
+						className={meal.title.replaceAll(/[^a-zA-Z0-9]/g, '-')} 
+						targetClass={meal.title.replaceAll(/[^a-zA-Z0-9]/g, '-')} 
+						recipeData={recipeData} 
+						prepTime={prepTime} 
+						servingsNo={servingsNo} 
+						open={isOpen}
+						cuisine={cuisine}
+						hideRecipe={() => {setIsOpen(false)}}
+						/>
+				</div>
 			</article>
-			<div className='recipe-wrapper' onClick={() => {recipeExit()}}>
-				{recipeData && <RecipeCard recipeData={recipeData} prepTime={prepTime} servingsNo={servingsNo} />}
-			</div>
+
 		</section>
 	)
 }
