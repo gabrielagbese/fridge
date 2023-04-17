@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import MealList from "./MealList"
 import { useEffect } from "react";
 import "./layout.css"
@@ -23,7 +23,7 @@ function App() {
 		ingredientList.forEach(item => {
 			let li = document.createElement('li');
 			li.classList.add("tagstyle");
-			ul.appendChild(li);
+			ul.prepend(li);
 			li.addEventListener('click', function () {
 				let filteredArray = ingredientList.filter(ingredients => ingredients !== item);
 				listChange(filteredArray);
@@ -56,7 +56,33 @@ function App() {
 	}
 
 	let tl = gsap.timeline()
+	let tl2 = gsap.timeline()
 	let recipeList = document.querySelector(".result")
+	let favorite = document.querySelector(".favorite-section")
+	const favSec = useRef()
+
+	console.log("result check: "+recipeList)
+	console.log("favorite check: "+favSec)
+
+	let mm = gsap.matchMedia();
+	
+	function showFavorite(){
+		if(window.innerWidth < 720){
+			tl2.to(favSec.current,{yPercent: -206,duration: 1})
+		}
+		if(window.innerWidth >= 720){
+			tl2.to(favSec.current,{xPercent: -100,duration: 1})
+		}
+	}
+
+	function hideFavorite(){
+		if(window.innerWidth < 720){
+			tl2.to(favSec.current,{yPercent: 206,duration: 1})
+		}
+		if(window.innerWidth >= 720){
+			tl2.to(favSec.current,{xPercent: 100,duration: 1})
+		}
+	}
 
 	function showRecipeList(){
 		if(window.innerWidth < 720){
@@ -73,7 +99,7 @@ function App() {
 	function getMealData() {
 		console.log("passed string: " + stringResult)
 		fetch(
-			'https://api.spoonacular.com/recipes/findByIngredients?apiKey=84958847be2244b1b11a3158c0e32ca8&ingredients=' + stringResult
+			'https://api.spoonacular.com/recipes/findByIngredients?apiKey=1bddb21db90a4dcea2cd71ce8f2d1188&ingredients=' + stringResult
 		)
 			.then((response) => response.json())
 			.then((data) => {
@@ -87,10 +113,19 @@ function App() {
 		showRecipeList();
 	}
 
+	function getFavoriteData(){
+		showFavorite();
+	}
+
 
 	return (
 		<div className="app">
 			<section className="controls">
+				<div className="controls-top">
+					<p className="hello-name">Hello</p>
+					<button className="log-in-out">in</button>
+					<button className="log-in-out">out</button>
+				</div>
 				<p className="whats">What's in your fridge?</p>
 				<div className="input-section">
 					<div className="input-section-top">
@@ -105,11 +140,17 @@ function App() {
 					<button className="get-button" onClick={getMealData}>Get Recipe</button>
 				</div>
 				<ul className="ingredient-track"></ul>
-				<button className="fav-button">Favorites</button>
+				<button className="fav-button" onClick={getFavoriteData}>Favorites</button>
 			</section>
 			<section className="result">
-				<p onClick={hideRecipeList}>X</p>
+				<div className="result-top">
+					<p className="result-title">Recipes: </p>
+					<p className="result-title" onClick={hideRecipeList}>X</p>
+				</div>
 				{mealData && <MealList mealData={mealData} />}
+			</section>
+			<section className="favorite-section" ref={favSec}>
+				<p onClick={hideFavorite}> x</p>
 			</section>
 		</div>
 	);

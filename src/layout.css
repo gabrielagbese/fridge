@@ -25,7 +25,7 @@
 @media (min-width: 0px) {
   .app {
     overflow: hidden;
-    height: 99vh;
+    height: 100vh;
     width: 100%;
   }
 }
@@ -54,10 +54,21 @@
 @media (min-width: 960px) {
   .controls {
     height: 99vh;
-    width: 30%;
+    min-width: 30%;
     padding: 1%;
     margin-top: 3%;
   }
+}
+
+.controls-top {
+  width: 100%;
+  height: 10%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .result {
@@ -78,11 +89,44 @@
   .result {
     overflow-y: auto;
     background-color: #e4eadf;
-    width: 70%;
+    min-width: 65%;
     height: 99vh;
     padding: 2%;
     border-left: medium solid black;
   }
+}
+
+.result-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.hello-name {
+  font-size: 1.5rem;
+  font-family: 'DM Serif Display', serif;
+}
+
+.log-in-out {
+  width: 15%;
+  height: 80%;
+  border-radius: 20px;
+}
+
+.result-title {
+  font-size: 2.5rem;
+  font-family: 'DM Serif Display', serif;
 }
 
 .input-section {
@@ -129,6 +173,7 @@
   color: #DFE4DB;
   font-size: 1.5rem;
   border-radius: 15px;
+  font-family: 'DM Serif Display', serif;
 }
 
 ul {
@@ -139,10 +184,10 @@ ul {
 .ingredient-track {
   margin-top: 3%;
   width: 100%;
-  height: 40%;
+  height: 41%;
   overflow: auto;
   background-color: #ebefe7;
-  padding-top: 3%;
+  padding-top: 2%;
   border-radius: 10px;
   border: thin solid black;
   -webkit-box-sizing: border-box;
@@ -156,6 +201,7 @@ ul {
   color: #DFE4DB;
   font-size: 1.5rem;
   border-radius: 15px;
+  font-family: 'DM Serif Display', serif;
 }
 
 .tagstyle::before {
@@ -178,7 +224,6 @@ ul {
   overflow: hidden;
   border-radius: 10px;
   margin-bottom: 3%;
-  font-family: 'DM Serif Display', serif;
   list-style: none;
   font-size: 2.25rem;
   text-justify: auto;
@@ -235,8 +280,9 @@ article {
 
 @media (min-width: 960px) {
   .m-inline {
+    margin-top: -5%;
     min-width: 30%;
-    margin-left: 2%;
+    margin-left: 5%;
     margin-right: 2%;
     min-height: 100%;
     display: -webkit-box;
@@ -266,12 +312,13 @@ article {
 @media (min-width: 960px) {
   .m-title {
     min-width: 25%;
-    font-size: 2rem;
+    font-size: 2.125rem;
   }
 }
 
 .m-img {
   border-radius: 15px;
+  border: medium solid black;
 }
 
 @media (min-width: 0px) {
@@ -283,14 +330,22 @@ article {
 @media (min-width: 960px) {
   .m-img {
     min-width: 45%;
+    margin-left: 5%;
     -o-object-fit: cover;
        object-fit: cover;
   }
 }
 
+@media (min-width: 0px) {
+  .m-ul {
+    font-size: 1.5rem;
+    list-style: none;
+  }
+}
+
 @media (min-width: 960px) {
   .m-ul {
-    margin-left: 5%;
+    margin-left: 0%;
     min-width: 40%;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -302,6 +357,67 @@ article {
     -webkit-box-pack: space-evenly;
         -ms-flex-pack: space-evenly;
             justify-content: space-evenly;
+  }
+}
+
+.m-buttons {
+  padding-top: 5%;
+}
+
+@media (min-width: 0px) {
+  .m-buttons {
+    width: 100%;
+    min-height: 10vh;
+  }
+}
+
+@media (min-width: 960px) {
+  .m-buttons {
+    width: 100%;
+    min-height: 60%;
+  }
+}
+
+.m-details {
+  width: 78%;
+  margin-right: 2%;
+  background-color: #111;
+  font-weight: 500;
+  color: white;
+  font-size: 1.25rem;
+  border-radius: 7.5px;
+}
+
+@media (min-width: 0px) {
+  .m-details {
+    min-height: 9vh;
+  }
+}
+
+@media (min-width: 960px) {
+  .m-details {
+    min-height: 100%;
+  }
+}
+
+.m-save {
+  width: 20%;
+  background-color: #111;
+  font-weight: 500;
+  color: white;
+  font-size: 1.25rem;
+  border-radius: 7.5px;
+}
+
+@media (min-width: 0px) {
+  .m-save {
+    min-height: 9vh;
+  }
+}
+
+@media (min-width: 960px) {
+  .m-save {
+    min-height: 100%;
   }
 }
 
@@ -337,13 +453,43 @@ article {
   .recipe-card {
     position: fixed;
     top: 5%;
-    left: 32.5%;
+    left: 33%;
     width: 60%;
     height: 80%;
     -webkit-transform: translate(-5px, 0%);
             transform: translate(-5px, 0%);
     -webkit-box-shadow: 0px 10px 100px #00000033;
             box-shadow: 0px 10px 100px #00000033;
+  }
+}
+
+.ing-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.ingredients {
+  margin-left: 5%;
+  font-weight: 500;
+}
+
+@media (min-width: 0px) {
+  .favorite-section {
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
+    background-color: #E7DDC8;
+    z-index: 3;
+  }
+}
+
+@media (min-width: 960px) {
+  .favorite-section {
+    width: 69%;
+    min-width: 69%;
+    height: 100%;
+    background-color: #E7DDC8;
+    z-index: 3;
   }
 }
 /*# sourceMappingURL=layout.css.map */

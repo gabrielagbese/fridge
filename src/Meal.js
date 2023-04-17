@@ -6,59 +6,49 @@ import gsap from 'gsap';
 export default function Meal({ meal }) {
 
 	var mealinfo = null;
+	const [data, setData] = useState(null);
 	const [recipeData, setRecipeData] = useState(null);
 	const [prepTime, setPrepTime] = useState(null);
 	const [servingsNo, setServingsNo] = useState(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const [cuisine, setCuisine] = useState(null);
-	const [isClosed, setIsClosed] = useState(true);
-	const [title, setTitle] = useState(null);
+	const [recipeId, setRecipeId] = useState(null);
+	const [ingredients, setIngredients] = useState([]);
+	const [diets, setDiets] = useState(null);
 
 	const result = document.querySelector(".result");
 
-	// function disableScroll() {
-	// 	// Get the current page scroll position
-	// 	let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-	// 	let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-	  
-	// 		// if any scroll is attempted,
-	// 		// set this to the previous value
-	// 		window.onscroll = function() {
-	// 			window.scrollTo(scrollLeft, scrollTop);
-	// 		};
-	// }
-	  
-	// function enableScroll() {
-	// 	window.onscroll = function() {};
-	// }
-
-
-	function getDetails(id) {
+	async function getDetails(id) {
 		fetch(
-			'https://api.spoonacular.com/recipes/' + id + '/information?apiKey=84958847be2244b1b11a3158c0e32ca8&includeNutrition=true'
+			'https://api.spoonacular.com/recipes/' + id + '/information?apiKey=1bddb21db90a4dcea2cd71ce8f2d1188&includeNutrition=true'
 		)
 			.then((response) => response.json())
 			.then((data) => {
+				setData(data)
+				console.log(data)
 				setRecipeData(data.instructions);
-				console.log(data.instructions)
-				console.log(data.cuisine)
 				setPrepTime(data.readyInMinutes)
+				setRecipeId(data.id)
+				setDiets(data.diets)
 				setServingsNo(data.servings)
 				setCuisine(data.cuisine)
-				setTitle(data)
+				setDiets(data.diets)
+				setIngredients(data.extendedIngredients)
 			})
 			.catch(() => {
 				console.log("error")
 			})
-		console.log("title:" + title)
+
+			
+		
 	}
 
 	function seeRecipe() {
 		getDetails(meal.id);
 		setIsOpen(true);
-		//result.style.overflow = "hidden"; 
-		// disableScroll();
 	}
+
+	
 
 	return (
 		<section className='meal-list-wrapper'>
@@ -67,12 +57,12 @@ export default function Meal({ meal }) {
 					<h1 className='m-title'>{meal.title}</h1>
 					<ul className='m-ul'>
 						<li>Matching ingredients: {meal.usedIngredientCount}</li>
-						{/* <li>Total ingredients: {meal.missedIngredientCount}</li>
-						<li>{Math.round((meal.usedIngredientCount/meal.missedIngredientCount)*100)}% Match</li> */}
+						{/* <li>Total ingredients: {meal.missedIngredientCount}</li> */}
+						<li>{Math.round((meal.usedIngredientCount/meal.missedIngredientCount)*100)}% Match</li>
 						{/* <li>Ingredients used: {meal.usedIngredients.name}</li> */}
 						<div className='m-buttons'>
-							<button onClick={() => { seeRecipe() }}>See Recipe</button>
-							<button >h</button>
+							<button className='m-details' onClick={() => { seeRecipe() }}>See Recipe</button>
+							<button className='m-save'>h</button>
 						</div>
 				</ul>
 				</div>
@@ -92,6 +82,9 @@ export default function Meal({ meal }) {
 						servingsNo={servingsNo} 
 						open={isOpen}
 						cuisine={cuisine}
+						recipeId={recipeId}
+						ingredients={ingredients}
+						diets={diets}
 						hideRecipe={() => {setIsOpen(false)}}
 						/>
 				</div>
