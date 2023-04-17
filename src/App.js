@@ -3,6 +3,7 @@ import MealList from "./MealList"
 import { useEffect } from "react";
 import "./layout.css"
 import gsap from "gsap"
+import { Auth } from "./components/Auth";
 
 
 function App() {
@@ -121,11 +122,7 @@ function App() {
 	return (
 		<div className="app">
 			<section className="controls">
-				<div className="controls-top">
-					<p className="hello-name">Hello</p>
-					<button className="log-in-out">in</button>
-					<button className="log-in-out">out</button>
-				</div>
+				<Auth />
 				<p className="whats">What's in your fridge?</p>
 				<div className="input-section">
 					<div className="input-section-top">
