@@ -3,24 +3,86 @@ import MealList from "./MealList"
 import { useEffect } from "react";
 import "./layout.css"
 import gsap from "gsap"
+
+
 import { Auth } from "./components/Auth";
+import { db } from "./config/firebase"
+import { getDocs, collection, addDoc, doc, setDoc, query, where, getDoc } from "firebase/firestore"
+import { auth, googleProvider } from "./config/firebase"
+import { signInWithPopup, signOut, getAdditionalUserInfo } from "firebase/auth"
+
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faX, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 
 function App() {
+	const [favoriteList, setFavoriteList] = useState([])
 	const [mealData, setMealData] = useState(null);
 	const [ingredients, setIngredients] = useState("chicken,curry");
 	var [ingredientList, listChange] = useState([])
+	const [favoriteSectionDataState, setFavoriteSectionDataState] = useState(null)
+
+	const signInGoogle = async () => {
+		try {
+			await signInWithPopup(auth, googleProvider).then(async (result) => {
+				const aUI = getAdditionalUserInfo(result)
+				const isNew = aUI.isNewUser
+				console.log(isNew)
+				if (isNew) {
+					// Create Firestore document for new user with empty favouriteId array
+					const userRef = doc(db, "users", result.user.uid);
+					const userData = {
+						favouriteId: [],
+						name: result.user.displayName
+					};
+					await setDoc(userRef, userData);
+				} else {
+					// Check Firestore for existing user document and log its data
+					const userDocRef = doc(db, "users", result.user.uid);
+					const userDocSnap = await getDoc(userDocRef);
+					if (userDocSnap.exists()) {
+						const userData = userDocSnap.data();
+						setFavoriteList(userData.favouriteId)
+						console.log(userData);
+					} else {
+						console.log("No user document found for this UID.");
+					}
+				}
+			})
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+
+	const logout = async () => {
+		try {
+			await signOut(auth)
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+
 	let stringResult;
+	const userCollectionRef = collection(db, "users")
+
+
+
+	console.log("fl:")
+	console.log(favoriteList)
+	// const favoriteClick = async () => {
+	// 	await addDoc(userCollectionRef, {recipeId: []})
+	// }
+
 
 
 	useEffect(() => {
 		var numbs = 0;
 		//const ul = document.createElement('ul');
 		const ul = document.querySelector(".ingredient-track");
-
 		ul.innerHTML = ""
-
-
 		ingredientList.forEach(item => {
 			let li = document.createElement('li');
 			li.classList.add("tagstyle");
@@ -38,8 +100,6 @@ function App() {
 		});
 		stringResult = String(ingredientList)
 		console.log(stringResult);
-
-		//
 	},);
 
 	function handleChange(e) {
@@ -62,46 +122,43 @@ function App() {
 	let favorite = document.querySelector(".favorite-section")
 	const favSec = useRef()
 
-	console.log("result check: "+recipeList)
-	console.log("favorite check: "+favSec)
-
 	let mm = gsap.matchMedia();
-	
-	function showFavorite(){
-		if(window.innerWidth < 720){
-			tl2.to(favSec.current,{yPercent: -206,duration: 1})
+
+	function showFavorite() {
+		if (window.innerWidth < 720) {
+			tl2.to(favSec.current, { yPercent: -206, duration: 1 })
 		}
-		if(window.innerWidth >= 720){
-			tl2.to(favSec.current,{xPercent: -100,duration: 1})
+		if (window.innerWidth >= 720) {
+			tl2.to(favSec.current, { xPercent: -100, duration: 1 })
 		}
 	}
 
-	function hideFavorite(){
-		if(window.innerWidth < 720){
-			tl2.to(favSec.current,{yPercent: 206,duration: 1})
+	function hideFavorite() {
+		if (window.innerWidth < 720) {
+			tl2.to(favSec.current, { yPercent: 206, duration: 1 })
 		}
-		if(window.innerWidth >= 720){
-			tl2.to(favSec.current,{xPercent: 100,duration: 1})
-		}
-	}
-
-	function showRecipeList(){
-		if(window.innerWidth < 720){
-			tl.to(recipeList,{yPercent: -100,duration: 1})
+		if (window.innerWidth >= 720) {
+			tl2.to(favSec.current, { xPercent: 100, duration: 1 })
 		}
 	}
 
-	function hideRecipeList(){
-		if(window.innerWidth < 720){
-			tl.to(recipeList,{yPercent: 100,duration: 1})
+
+
+	function showRecipeList() {
+		if (window.innerWidth < 720) {
+			tl.to(recipeList, { yPercent: -100, duration: 1 })
+		}
+	}
+
+	function hideRecipeList() {
+		if (window.innerWidth < 720) {
+			tl.to(recipeList, { yPercent: 100, duration: 1 })
 		}
 	}
 
 	function getMealData() {
 		console.log("passed string: " + stringResult)
-		fetch(
-			'https://api.spoonacular.com/recipes/findByIngredients?apiKey=1bddb21db90a4dcea2cd71ce8f2d1188&ingredients=' + stringResult
-		)
+		fetch('https://api.spoonacular.com/recipes/findByIngredients?apiKey=1bddb21db90a4dcea2cd71ce8f2d1188&ingredients=' + stringResult)
 			.then((response) => response.json())
 			.then((data) => {
 				setMealData(data);
@@ -110,19 +167,60 @@ function App() {
 			.catch(() => {
 				console.log("error")
 			})
-			
+
 		showRecipeList();
 	}
 
-	function getFavoriteData(){
-		showFavorite();
+	function getFavoriteData() {
+		getFavoriteRecipes()
+		showFavorite()
+		favoritesClick()
+		console.log("fsd:");
+		console.log(favoriteSectionDataState);
 	}
+
+	const getFavoriteRecipes = async () => {
+		const favoriteIds = favoriteList.join(",");
+		const response = await fetch(`https://api.spoonacular.com/recipes/informationBulk?apiKey=1bddb21db90a4dcea2cd71ce8f2d1188&ids=${favoriteIds}`);
+		const favoriteSectionData = await response.json();
+		setFavoriteSectionDataState(favoriteSectionData)
+		console.log(favoriteSectionData);
+		// Do something with the retrieved data
+	  }
+
+	const favoritesClick = async () => {
+		if (auth.currentUser) {
+		  const uid = auth.currentUser.uid;
+		  const userRef = doc(collection(db, "users"), uid);
+	
+		  try {
+			const docSnap = await getDoc(userRef);
+			if (docSnap.exists()) {
+			  const favorites = docSnap.data().favouriteId;
+			  console.log(favorites);
+			  setFavoriteList(favorites);
+			}
+		  } catch (error) {
+			console.log("Error getting document:", error);
+		  }
+		}
+	};
 
 
 	return (
 		<div className="app">
 			<section className="controls">
-				<Auth />
+				<div className="controls-top">
+					<div className="top-name">
+						<p className="hello-name">Hello&nbsp;</p>
+						<p className="hello-name">{auth?.currentUser?.displayName.split(' ')[0]},</p>
+					</div>
+					<div className="log-buttons">
+						<button className="log-in" onClick={signInGoogle}>sign in with google </button>
+						<button className="log-out" onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} /></button>
+					</div>
+
+				</div>
 				<p className="whats">What's in your fridge?</p>
 				<div className="input-section">
 					<div className="input-section-top">
@@ -132,7 +230,7 @@ function App() {
 							placeholder="Enter Ingredients"
 							onChange={handleChange}
 						/>
-						<button className="add-button" onClick={handleInput}>+</button>
+						<button className="add-button" onClick={handleInput}><FontAwesomeIcon icon={faPlus} /></button>
 					</div>
 					<button className="get-button" onClick={getMealData}>Get Recipe</button>
 				</div>
@@ -142,12 +240,19 @@ function App() {
 			<section className="result">
 				<div className="result-top">
 					<p className="result-title">Recipes: </p>
-					<p className="result-title" onClick={hideRecipeList}>X</p>
+					<p className="result-title" onClick={hideRecipeList}><FontAwesomeIcon icon={faX} /></p>
 				</div>
 				{mealData && <MealList mealData={mealData} />}
 			</section>
 			<section className="favorite-section" ref={favSec}>
-				<p onClick={hideFavorite}> x</p>
+				<p onClick={hideFavorite}>&nbsp;&nbsp;<FontAwesomeIcon icon={faX} /></p>
+				<div className="favorite-section-inner">
+					
+					{/* {favoriteList.map((favorite) => (
+						<p> id: {favorite}</p>
+					))} */}
+					{favoriteSectionDataState && <MealList mealData={favoriteSectionDataState} />}
+				</div>
 			</section>
 		</div>
 	);

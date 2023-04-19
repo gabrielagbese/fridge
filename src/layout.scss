@@ -368,7 +368,7 @@ article{
   @include lg{
     position: fixed;
     top: 5%;
-    left: 33%;
+    left: 30%;
     width: 60%;
     height: 80%;
     transform: translate(-5px,0%);
@@ -387,7 +387,7 @@ article{
 }
 
 .favorite-section{
- 
+  overflow-y: scroll;
   @include xs{
     width: 100%;
     min-width: 100%;
@@ -403,6 +403,15 @@ article{
     background-color: #E7DDC8;
     z-index: 3;
   };
+}
+
+.favorite-section-inner{
+  overflow-y: scroll;
+  width: 98%;
+}
+
+.top-name{
+  display: flex;
 }
 
 

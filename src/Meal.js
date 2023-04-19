@@ -2,6 +2,10 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import RecipeCard from './RecipeCard';
 import gsap from 'gsap';
+import { doc, getDoc, updateDoc, collection } from "firebase/firestore";
+import { auth, db } from "./config/firebase";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 
 export default function Meal({ meal }) {
 
@@ -38,9 +42,6 @@ export default function Meal({ meal }) {
 			.catch(() => {
 				console.log("error")
 			})
-
-			
-		
 	}
 
 	function seeRecipe() {
@@ -48,6 +49,39 @@ export default function Meal({ meal }) {
 		setIsOpen(true);
 	}
 
+	const addToFavorites = async (id) => {
+		// Get the current user's ID
+		const uid = auth.currentUser.uid;
+
+		// Get the user's document reference
+		const userRef = doc(db, "users", uid);
+
+		// Get the user's data from Firestore
+		const docSnap = await getDoc(userRef);
+
+		// Check if the document exists
+		if (docSnap.exists()) {
+			// Get the current list of favorites
+			const favorites = docSnap.data().favouriteId || [];
+
+			// Check if the meal is already in favorites
+			if (favorites.includes(id)) {
+				// Remove the meal from favorites
+				const index = favorites.indexOf(id);
+				favorites.splice(index, 1);
+			} else {
+				// Add the meal to favorites
+				favorites.push(id);
+			}
+
+			// Update the user's document in Firestore
+			await updateDoc(userRef, {
+				favouriteId: favorites,
+			});
+		} else {
+			console.log("User document not found");
+		}
+	};
 	
 
 	return (
@@ -56,13 +90,11 @@ export default function Meal({ meal }) {
 				<div className='m-inline'>
 					<h1 className='m-title'>{meal.title}</h1>
 					<ul className='m-ul'>
-						<li>Matching ingredients: {meal.usedIngredientCount}</li>
-						{/* <li>Total ingredients: {meal.missedIngredientCount}</li> */}
-						<li>{Math.round((meal.usedIngredientCount/meal.missedIngredientCount)*100)}% Match</li>
-						{/* <li>Ingredients used: {meal.usedIngredients.name}</li> */}
+						{meal.usedIngredientCount && <li>Matching ingredients: {meal.usedIngredientCount}</li>}
+						{meal.usedIngredientCount && <li>{Math.round((meal.usedIngredientCount/meal.missedIngredientCount)*100)}% Match</li>}
 						<div className='m-buttons'>
 							<button className='m-details' onClick={() => { seeRecipe() }}>See Recipe</button>
-							<button className='m-save'>h</button>
+							<button className='m-save' onClick={() => {addToFavorites(meal.id)}}><FontAwesomeIcon icon={faBookmark} /></button>
 						</div>
 				</ul>
 				</div>
