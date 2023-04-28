@@ -57,7 +57,9 @@
   height: 10%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+
 
 .result{
   z-index: 2;
@@ -93,13 +95,39 @@
 
 .log-in-out{
   width: 15%;
-  height: 80%;
+  height: 100%;
   border-radius: 20px;
 }
+
+.log-buttons{
+  //outline: thin solid red;
+  width: 30%;
+  height: 50%;
+}
+
+.log-out{
+  width: 100%;
+  height: 100%;
+  font-size: 0.875rem;
+}
+
+.log-in{
+  width: 100%;
+  height: 110%;
+  font-size: 0.875rem;
+}
+
+
 
 .result-title{
   font-size: 2.5rem;
   font-family: 'DM Serif Display', serif;
+  @include xs{
+    display: block;
+   };
+   @include lg{
+    display: none;
+   };
 }
 
 
@@ -209,6 +237,10 @@ ul{
   overflow-x: hidden;
 }
 
+.meal-list-close{
+  
+}
+
 .meal-list{
   
   padding-bottom: 5%;
@@ -304,7 +336,7 @@ article{
   };
   @include lg{
     width: 100%;
-    min-height: 60%; 
+    min-height: 7vh; 
   };
 }
 
@@ -342,7 +374,7 @@ article{
 .recipe-wrapper{
 
   font-size: xx-small;
-  //background-color: yellow;
+  //position: static;
   width: 90%;
 }
 
@@ -367,15 +399,117 @@ article{
   };
   @include lg{
     position: fixed;
-    top: 5%;
-    left: 30%;
-    width: 60%;
+    top: 5vh;
+    left: 35vw;
+    width: 55vw;
     height: 80%;
     transform: translate(-5px,0%);
     box-shadow: 0px 10px 100px #00000033;
   };
 }
 
+
+.favorite-recipe-card{
+  font-size: 1rem;
+  z-index: 1000;
+  background-color: #BECFBC;
+  border-radius: 20px;
+  padding: 3%;
+  overflow: auto;
+  border: medium solid black;
+
+  @include xs{
+    position: relative;
+    top: 10px;
+    width: 99%;
+    height: 75vh;
+  };
+  @include lg{
+    position: fixed;
+    top: 5vh;
+    left: 5vw;
+    width: 55vw;
+    height: 80%;
+    transform: translate(-5px,0%);
+    box-shadow: 0px 10px 100px #00000033;
+  };
+}
+
+.recipe-card-header {
+  @include xs{
+   
+  };
+  @include lg{
+    display: flex;
+  };
+}
+
+.recipe-card-title{
+  @include xs{
+    display: none;
+  };
+  @include lg{
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 500;
+    font-family: 'DM Serif Display', serif;
+  };
+  
+}
+
+.recipe-card-header > * {
+  margin-right: 5%  ;
+}
+
+.diet-ul{
+  display: flex;
+}
+
+.diet-ul > li{
+  height: 60%;
+  width: auto;
+  white-space: nowrap;
+  background-color: #7e8b7d;
+  color: white;
+  margin-left: 2.5%;
+  list-style: none;
+  padding: 5px;
+  border: thin solid black;
+  border-radius: 5px;
+}
+
+.ingredients-instructions{
+  @include xs{
+   
+  };
+  @include lg{
+    display: flex;
+  };
+}
+
+.ingredients-ul{
+  @include xs{
+   
+  };
+  @include lg{
+    min-width: 20vw;
+    border-right: medium solid black;
+  };
+}
+
+.instructions{
+  @include xs{
+   
+  };
+  @include lg{
+   padding-left: 2.5%;
+   margin-top: 2%
+  };
+}
+
+.instructions-list{
+  font-weight: 500;
+}
 .ing-heading{
   font-size: 1.25rem;
   font-weight: 600;
@@ -402,16 +536,44 @@ article{
     height: 100%;
     background-color: #E7DDC8;
     z-index: 3;
+    overflow-x: hidden;
   };
 }
 
 .favorite-section-inner{
   overflow-y: scroll;
   width: 98%;
+  
 }
+
 
 .top-name{
   display: flex;
+}
+
+.empty-home{
+  @include xs{
+   display: none;
+  };
+  @include lg{
+    position: absolute; /* or fixed */
+    top: 50%; /* move to vertical center of parent */
+    left: 65%; /* move to horizontal center of parent */
+    transform: translate(-50%, -50%); 
+    display: flex;
+    flex-direction: column;
+  };
+}
+
+.empty-home :first-child {
+  font-size: 6rem;
+  color: #7e8b7d;
+}
+
+.empty-home > p{
+  font-size: 2rem;
+  text-align: center;
+  color: #7e8b7d;
 }
 
 

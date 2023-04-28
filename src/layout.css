@@ -69,6 +69,9 @@
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .result {
@@ -120,13 +123,42 @@
 
 .log-in-out {
   width: 15%;
-  height: 80%;
+  height: 100%;
   border-radius: 20px;
+}
+
+.log-buttons {
+  width: 30%;
+  height: 50%;
+}
+
+.log-out {
+  width: 100%;
+  height: 100%;
+  font-size: 0.875rem;
+}
+
+.log-in {
+  width: 100%;
+  height: 110%;
+  font-size: 0.875rem;
 }
 
 .result-title {
   font-size: 2.5rem;
   font-family: 'DM Serif Display', serif;
+}
+
+@media (min-width: 0px) {
+  .result-title {
+    display: block;
+  }
+}
+
+@media (min-width: 960px) {
+  .result-title {
+    display: none;
+  }
 }
 
 .input-section {
@@ -374,7 +406,7 @@ article {
 @media (min-width: 960px) {
   .m-buttons {
     width: 100%;
-    min-height: 60%;
+    min-height: 7vh;
   }
 }
 
@@ -452,15 +484,120 @@ article {
 @media (min-width: 960px) {
   .recipe-card {
     position: fixed;
-    top: 5%;
-    left: 30%;
-    width: 60%;
+    top: 5vh;
+    left: 35vw;
+    width: 55vw;
     height: 80%;
     -webkit-transform: translate(-5px, 0%);
             transform: translate(-5px, 0%);
     -webkit-box-shadow: 0px 10px 100px #00000033;
             box-shadow: 0px 10px 100px #00000033;
   }
+}
+
+.favorite-recipe-card {
+  font-size: 1rem;
+  z-index: 1000;
+  background-color: #BECFBC;
+  border-radius: 20px;
+  padding: 3%;
+  overflow: auto;
+  border: medium solid black;
+}
+
+@media (min-width: 0px) {
+  .favorite-recipe-card {
+    position: relative;
+    top: 10px;
+    width: 99%;
+    height: 75vh;
+  }
+}
+
+@media (min-width: 960px) {
+  .favorite-recipe-card {
+    position: fixed;
+    top: 5vh;
+    left: 5vw;
+    width: 55vw;
+    height: 80%;
+    -webkit-transform: translate(-5px, 0%);
+            transform: translate(-5px, 0%);
+    -webkit-box-shadow: 0px 10px 100px #00000033;
+            box-shadow: 0px 10px 100px #00000033;
+  }
+}
+
+@media (min-width: 960px) {
+  .recipe-card-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (min-width: 0px) {
+  .recipe-card-title {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .recipe-card-title {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 500;
+    font-family: 'DM Serif Display', serif;
+  }
+}
+
+.recipe-card-header > * {
+  margin-right: 5%;
+}
+
+.diet-ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.diet-ul > li {
+  height: 60%;
+  width: auto;
+  white-space: nowrap;
+  background-color: #7e8b7d;
+  color: white;
+  margin-left: 2.5%;
+  list-style: none;
+  padding: 5px;
+  border: thin solid black;
+  border-radius: 5px;
+}
+
+@media (min-width: 960px) {
+  .ingredients-instructions {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (min-width: 960px) {
+  .ingredients-ul {
+    min-width: 20vw;
+    border-right: medium solid black;
+  }
+}
+
+@media (min-width: 960px) {
+  .instructions {
+    padding-left: 2.5%;
+    margin-top: 2%;
+  }
+}
+
+.instructions-list {
+  font-weight: 500;
 }
 
 .ing-heading {
@@ -494,6 +631,7 @@ article {
     height: 100%;
     background-color: #E7DDC8;
     z-index: 3;
+    overflow-x: hidden;
   }
 }
 
@@ -506,5 +644,42 @@ article {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+@media (min-width: 0px) {
+  .empty-home {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .empty-home {
+    position: absolute;
+    /* or fixed */
+    top: 50%;
+    /* move to vertical center of parent */
+    left: 65%;
+    /* move to horizontal center of parent */
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
+.empty-home :first-child {
+  font-size: 6rem;
+  color: #7e8b7d;
+}
+
+.empty-home > p {
+  font-size: 2rem;
+  text-align: center;
+  color: #7e8b7d;
 }
 /*# sourceMappingURL=layout.css.map */

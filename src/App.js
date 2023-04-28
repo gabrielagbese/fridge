@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react"
 import MealList from "./MealList"
+import FavoriteMealList from "./FavoriteMealList";
 import { useEffect } from "react";
 import "./layout.css"
 import gsap from "gsap"
@@ -13,13 +14,13 @@ import { signInWithPopup, signOut, getAdditionalUserInfo } from "firebase/auth"
 
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faX, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faX, faPlus,faBowlFood } from '@fortawesome/free-solid-svg-icons'
 
 
 function App() {
 	const [favoriteList, setFavoriteList] = useState([])
 	const [mealData, setMealData] = useState(null);
-	const [ingredients, setIngredients] = useState("chicken,curry");
+	const [ingredients, setIngredients] = useState("");
 	var [ingredientList, listChange] = useState([])
 	const [favoriteSectionDataState, setFavoriteSectionDataState] = useState(null)
 
@@ -111,8 +112,8 @@ function App() {
 		//list.push(ingredients);
 		listChange([...ingredientList, ingredients]);
 
-		document.querySelector(".ingInput").value = ""
-		document.querySelector(".ingInput").focus();
+		document.querySelector(".ing-input").value = ""
+		document.querySelector(".ing-input").focus();	
 
 	}
 
@@ -176,7 +177,7 @@ function App() {
 		showFavorite()
 		favoritesClick()
 		console.log("fsd:");
-		console.log(favoriteSectionDataState);
+		console.log(auth?.currentUser? "auth yes":"auth no");
 	}
 
 	const getFavoriteRecipes = async () => {
@@ -216,8 +217,9 @@ function App() {
 						<p className="hello-name">{auth?.currentUser?.displayName.split(' ')[0]},</p>
 					</div>
 					<div className="log-buttons">
-						<button className="log-in" onClick={signInGoogle}>sign in with google </button>
-						<button className="log-out" onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} /></button>
+						{auth?.currentUser? <button className="log-out" onClick={logout}>Log Out&nbsp;&nbsp;&nbsp; <FontAwesomeIcon icon={faRightFromBracket} /></button> :<button className="log-in" onClick={signInGoogle}>Sign in with Google </button>}
+						
+						
 					</div>
 
 				</div>
@@ -227,7 +229,7 @@ function App() {
 						<input
 							type="string"
 							className="ing-input"
-							placeholder="Enter Ingredients"
+							placeholder="Enter Ingredient"
 							onChange={handleChange}
 						/>
 						<button className="add-button" onClick={handleInput}><FontAwesomeIcon icon={faPlus} /></button>
@@ -235,23 +237,28 @@ function App() {
 					<button className="get-button" onClick={getMealData}>Get Recipe</button>
 				</div>
 				<ul className="ingredient-track"></ul>
-				<button className="fav-button" onClick={getFavoriteData}>Favorites</button>
+				<button className="fav-button" onClick={auth?.currentUser? getFavoriteData : signInGoogle}>Favorites</button>
 			</section>
 			<section className="result">
-				<div className="result-top">
+				{/* <div className="result-top">
 					<p className="result-title">Recipes: </p>
 					<p className="result-title" onClick={hideRecipeList}><FontAwesomeIcon icon={faX} /></p>
-				</div>
-				{mealData && <MealList mealData={mealData} />}
+				</div> */}
+				{mealData && <p className="result-title" onClick={hideRecipeList}><FontAwesomeIcon icon={faX} /></p>}
+				{mealData? <MealList mealData={mealData} />: 
+				<div className="empty-home">
+					<FontAwesomeIcon icon={faBowlFood} />
+					<p>Input your ingredients and click <br/>"Get Recipe" to see the recipes you can make.</p>
+				</div>}
 			</section>
 			<section className="favorite-section" ref={favSec}>
-				<p onClick={hideFavorite}>&nbsp;&nbsp;<FontAwesomeIcon icon={faX} /></p>
+				<p onClick={hideFavorite} >&nbsp;&nbsp;<FontAwesomeIcon icon={faX} /></p>
 				<div className="favorite-section-inner">
 					
 					{/* {favoriteList.map((favorite) => (
 						<p> id: {favorite}</p>
 					))} */}
-					{favoriteSectionDataState && <MealList mealData={favoriteSectionDataState} />}
+					{favoriteSectionDataState && <FavoriteMealList mealData={favoriteSectionDataState} />}
 				</div>
 			</section>
 		</div>

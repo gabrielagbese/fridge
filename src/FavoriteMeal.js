@@ -1,13 +1,13 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import RecipeCard from './RecipeCard';
+import FavoriteRecipeCard from './FavoriteRecipeCard';
 import gsap from 'gsap';
 import { doc, getDoc, updateDoc, collection } from "firebase/firestore";
 import { auth, db } from "./config/firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 
-export default function Meal({ meal }) {
+export default function FavoriteMeal({ meal }) {
 
 	var mealinfo = null;
 	const [data, setData] = useState(null);
@@ -45,12 +45,12 @@ export default function Meal({ meal }) {
 				setServingsNo(data.servings)
 				setCuisine(data.cuisine)
 				setDiets(data.diets)
+				setIngredients(data.extendedIngredients)
 				setVegetarian(data.vegetarian)
 				setVegan(data.vegan)
 				setDairyFree(data.dairyFree)
 				setGlutenFree(data.glutenFree)
 				setKeto(data.ketogenic)
-				setIngredients(data.extendedIngredients)
 			})
 			.catch(() => {
 				console.log("error")
@@ -119,7 +119,7 @@ export default function Meal({ meal }) {
 				
 				<div className='recipe-wrapper'>
 					<p></p>
-					<RecipeCard 
+					<FavoriteRecipeCard 
 						className={meal.title.replaceAll(/[^a-zA-Z0-9]/g, '-')} 
 						targetClass={meal.title.replaceAll(/[^a-zA-Z0-9]/g, '-')} 
 						recipeData={recipeData} 

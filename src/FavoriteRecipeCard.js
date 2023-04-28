@@ -1,30 +1,22 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 
-export default function RecipeCard({recipeData,prepTime,servingsNo,targetClass, open, hideRecipe, recipeId, title, ingredients, diets,vegetarian,vegan,dairyFree,glutenFree,keto}) {
+export default function FavoriteRecipeCard({recipeData,prepTime,servingsNo,targetClass, open, hideRecipe, recipeId, title, ingredients, diets,vegetarian,vegan,dairyFree,glutenFree,keto}) {
 
     const [ingredientss, setIngredientss] = useState([]);
 
-    // useEffect(() => {
-    //     for (let index = 0; index < diets.length; index++) {
-    //         console.log(diets[index])
-    //         var ul = document.getElementById("diet-ul");
-    //         var li = document.createElement("li");
-    //         li.appendChild(document.createTextNode(diets[index]));
-    //         ul.appendChild(li);
-    //     }
-    // }, []);
+    
 
     if(!open) return null
             
 
    
     return (
-        <main className='recipe-card'>
+        <main className='favorite-recipe-card'>
             <button onClick={hideRecipe}>X</button>
            <section className={"visible rcs" + targetClass} >
-                <p className='recipe-card-title'>{title}</p>
-                <div className='recipe-card-header'>
+           <p className='recipe-card-title'>{title}</p>
+           <div className='recipe-card-header'>
                     <h3>{prepTime} minutes</h3>
                     <h3>serves: {servingsNo}</h3>
                     <h3>Diet:</h3>
